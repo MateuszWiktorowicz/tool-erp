@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "tool-server": "json-server db.json -p 3333",
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",

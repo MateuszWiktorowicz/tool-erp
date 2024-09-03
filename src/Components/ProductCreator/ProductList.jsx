@@ -1,16 +1,5 @@
-const tools = [
-    {
-        code: "1",
-        name: "MM04",
-        cuttingDiameter: 12,
-        connectionDiameter: 12,
-        cuttingLength: 24,
-        totalLength: 73,
-        flutes: 4,
-        chamfer: 0.2
-    }
-];
-function ProductList() {
+
+function ProductList({ products }) {
     return(
         <section className="my-5 mx-2">
         <table className="table table-info table-striped text-center">
@@ -29,7 +18,7 @@ function ProductList() {
   </thead>
   <tbody>
     
-        {tools.map(tool => <tr><th scope="row">1</th><td>{tool.code}</td><td>{tool.name}</td><td>{tool.cuttingDiameter}</td><td>{tool.connectionDiameter}</td><td>{tool.cuttingLength}</td><td>{tool.totalLength}</td><td>{tool.flutes}</td><td>{tool.chamfer}</td></tr>)}
+        {products.map((tool, index) => <tr key={index}><th scope="row">{index + 1}</th><td>{tool.code}</td><td>{tool.name}</td><td>{tool.cuttingDiameter}</td><td>{tool.connectionDiameter}</td><td>{tool.cuttingLength}</td><td>{tool.totalLength}</td><td>{tool.flutes}</td><td>{tool.chamfer}</td></tr>)}
     
   </tbody>
 </table>
