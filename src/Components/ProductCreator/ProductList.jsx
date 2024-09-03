@@ -1,5 +1,12 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash } from '@fortawesome/free-solid-svg-icons'; //
 
-function ProductList({ products }) {
+
+function ProductList({ products, handleDeleteProduct }) {
+
+    
+
+
     return(
         <section className="my-5 mx-2">
         <table className="table table-info table-striped text-center">
@@ -14,11 +21,14 @@ function ProductList({ products }) {
       <th scope="col">Total Length</th>
       <th scope="col">Flutes</th>
       <th scope="col">Chamfer</th>
+      <th scope="col">Actions</th>
     </tr>
   </thead>
   <tbody>
     
-        {products.map((tool, index) => <tr key={index}><th scope="row">{index + 1}</th><td>{tool.code}</td><td>{tool.name}</td><td>{tool.cuttingDiameter}</td><td>{tool.connectionDiameter}</td><td>{tool.cuttingLength}</td><td>{tool.totalLength}</td><td>{tool.flutes}</td><td>{tool.chamfer}</td></tr>)}
+        {products.map((tool, index) => <tr key={index}><th scope="row">{index + 1}</th><td>{tool.code}</td><td>{tool.name}</td><td>{tool.cuttingDiameter}</td><td>{tool.connectionDiameter}</td><td>{tool.cuttingLength}</td><td>{tool.totalLength}</td><td>{tool.flutes}</td><td>{tool.chamfer}</td><td><button onClick={() => handleDeleteProduct(tool.id)} className="btn btn-danger">
+        <FontAwesomeIcon icon={faTrash} />
+                                </button></td></tr>)}
     
   </tbody>
 </table>

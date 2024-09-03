@@ -46,7 +46,7 @@ function ProductForm({ onAddProduct, products }) {
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        const id = parseInt(products[products.length -1].id) + 1;
+        const id = String(parseInt(products[products.length -1].id) + 1);
         console.log(products);
 
         const newProduct = {
