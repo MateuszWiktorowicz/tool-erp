@@ -2,9 +2,11 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { schema } from './schema';
+
 import './users.css';
 
-function Login() {
+
+function Register() {
     const { 
         register, 
         handleSubmit,
@@ -19,7 +21,7 @@ function Login() {
     };
     return(
         <form onSubmit={handleSubmit(onSubmit)}>
-            <h2>Login form</h2>
+            <h2>Register form</h2>
             <input {...register("email")} 
             type="text" 
             placeholder="Email" 
@@ -30,9 +32,14 @@ function Login() {
             placeholder="Password" 
             />
             {errors.password && (<div style={{ color: 'red' }}>{errors.password.message}</div>)}
+            <input {...register("confirmPassword")} 
+            type="password" 
+            placeholder="Confirm Password" 
+            />
+            {errors.confirmPassword && (<div style={{ color: 'red' }}>{errors.confirmPassword.message}</div>)}
             <button type="submit">Submit</button>
         </form>
     )
 }
 
-export default Login;
+export default Register;
