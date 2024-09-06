@@ -16,18 +16,19 @@ function App() {
 
   return (
     <>
-      <Header token={token}/>
       <BrowserRouter>
+      <Header token={token} />
       <Routes>
-      {!token ? (
+      {(!token) ? (
             <Route path="*" element={<Login setToken={setToken} />} />
           ) : (
               <Route path="/" element={<ProductCreator />} />
              
           )}
+          <Route path="/register" element={<Register />} />
       </Routes>
-      </BrowserRouter>
       <Footer />
+      </BrowserRouter>
     </>
   )
 }
