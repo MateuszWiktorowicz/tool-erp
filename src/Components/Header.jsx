@@ -1,6 +1,11 @@
 import mastermetLogo from "../../public/mastermet-logo.png";
 
-function Header() {
+
+function Header({ token }) {
+      const Logout = () => {
+        sessionStorage.removeItem('token');
+      };
+
     return(
         <header className="p-3 text-bg-dark">
         <div className="container">
@@ -12,9 +17,15 @@ function Header() {
             </div>
         
             <div className="text-end">
-              <button type="button" className="btn btn-outline-light me-2">Login</button>
-              <button type="button" className="btn btn-warning me-2">Sign-up</button>
-              <button type="button" className="btn btn-warning">Logout</button>
+            {token ? (
+          <button type="button" className="btn btn-warning" onClick={Logout}>
+            Logout
+          </button>
+        ) : (
+          <button type="button" className="btn btn-warning me-2">
+            Sign-up
+          </button>
+        )}           
             </div>
           </div>
         </div>
