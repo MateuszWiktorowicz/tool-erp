@@ -1,10 +1,16 @@
 import mastermetLogo from "../../public/mastermet-logo.png";
+import { useNavigate } from 'react-router-dom';
 
 
 function Header({ token }) {
-      const Logout = () => {
-        sessionStorage.removeItem('token');
-      };
+
+      const navigate = useNavigate(); 
+
+  const handleLogout = () => {
+    sessionStorage.removeItem('token'); 
+    navigate("/");
+    window.location.reload(); 
+  };
 
     return(
         <header className="p-3 text-bg-dark">
@@ -17,13 +23,13 @@ function Header({ token }) {
             </div>
         
             <div className="text-end">
-            {token ? (
-          <button type="button" className="btn btn-warning" onClick={Logout}>
+            {(token) ? (
+          <button type="button" className="btn btn-warning" onClick={handleLogout}>
             Logout
           </button>
         ) : (
           <button type="button" className="btn btn-warning me-2">
-            Sign-up
+            <a href="/register">Sign up</a>
           </button>
         )}           
             </div>
