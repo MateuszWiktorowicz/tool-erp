@@ -1,116 +1,107 @@
 import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from '@hookform/resolvers/zod';
+
+import { schema } from './schema';
 
 
 function ProductForm({ onAddProduct, products }) {
-    const [ code, setCode ] = useState("");
-    const [ name, setName ] = useState("");
-    const [ cuttingDiameter, setCuttingDiameter ] = useState("");
-    const [ connectionDiameter, setConnectionDiameter ] = useState("");
-    const [ cuttingLength, setCuttingLength ] = useState("");
-    const [ totalLength, setTotalLength ] = useState("");
-    const [ flutes, setFlutes ] = useState("");
-    const [ chamfer, setChamfer ] = useState("");
 
-    function handleCodeChange(event) {
-        setCode(event.target.value);
-    }
+    const { 
+        register, 
+        handleSubmit,
+        formState: {errors},
+        reset,
+        setError
+    } = useForm({ 
+            mode: "all",
+            resolver: zodResolver(schema) 
+        });
 
-    function handleNameChange(event) {
-        setName(event.target.value);
-    }
 
-    function handleCuttingDiameter(event) {
-        setCuttingDiameter(event.target.value);
-    }
+        const onSubmit = async (data) => {
+            const lastProduct = Array.isArray(products) && products.length > 0 
+        ? products[products.length - 1]
+        : { id: '0' }; 
 
-    function handleConnectionDiameterChange(event) {
-        setConnectionDiameter(event.target.value);
-    }
-
-    function handleCuttingLengthChange(event) {
-        setCuttingLength(event.target.value);
-    }
-
-    function handleTotalLengthChange(event) {
-        setTotalLength(event.target.value);
-    }
-
-    function handleFlutesChange(event) {
-        setFlutes(event.target.value);
-    }
-
-    function handleChamferChange(event) {
-        setChamfer(event.target.value);
-    }
-
-    const handleSubmit = (event) => {
-        event.preventDefault();
-
-        const id = String(parseInt(products[products.length -1].id) + 1);
-        console.log(products);
-
-        const newProduct = {
-            id,
-            code,
-            name,
-            cuttingDiameter,
-            connectionDiameter,
-            cuttingLength,
-            totalLength,
-            flutes,
-            chamfer,
+  
+    const newId = String(parseInt(lastProduct.id, 10) + 1);
+        
+            const newProduct = {
+                id: newId,
+                code: data.code,
+                name: data.name,
+                cuttingDiameter: parseFloat(data.cuttingDiameter),
+                connectionDiameter: parseFloat(data.connectionDiameter),
+                cuttingLength: parseFloat(data.cuttingLength),
+                totalLength: parseFloat(data.totalLength),
+                flutes: parseInt(data.flutes, 10),
+                chamfer: parseFloat(data.chamfer),
+            };
+        
+            try {
+                const response = await fetch('http://localhost:3333/tools', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(newProduct),
+                });
+        
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+        
+                const responseData = await response.json();
+                onAddProduct(responseData);
+                
+                reset(); 
+        
+            } catch (error) {
+                console.error('Error adding product:', error);
+            }
         };
-
-        fetch('http://localhost:3333/tools', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(newProduct),
-        })
-            .then(response => response.json())
-            .then(data => {
-                onAddProduct(data); 
-                setCode('');
-                setName('');
-                setCuttingDiameter('');
-                setConnectionDiameter('');
-                setCuttingLength('');
-                setTotalLength('');
-                setFlutes('');
-                setChamfer('');
-            })
-            .catch(error => console.error('Error adding product:', error));
-
-    };
 
     return(
         <section className="my-5 mx-2">
-    <form>
+    <form onSubmit={handleSubmit(onSubmit)}>
+        <div>
+            <h1>Tool creator form</h1>
+            <div className="p-3 d-flex justify-content-center"><img src="../public/tool-image.JPG" alt="tool-image"/></div>
+            
+        </div>
         <div className="row g-3">
-            <div className="col">
-                <input type="text" className="form-control" value={code} onChange={handleCodeChange} name="code" placeholder="Code" aria-label="Code" required/>
+            <div className="col-6">
+                <input {...register("code")} type="text" className="form-control" name="code" placeholder="Code" aria-label="Code" />
+                {errors.code && (<div style={{ color: 'red' }}>{errors.code.message}</div>)}
             </div>
-            <div className="col">
-                <input type="text" className="form-control" value={name} onChange={handleNameChange} name="name" placeholder="Name" aria-label="Name" autoComplete="name" required />
+            <div className="col-6">
+                <input {...register("name")} type="text" className="form-control"  name="name" placeholder="Name" aria-label="Name" autoComplete="name" />
+                {errors.name && (<div style={{ color: 'red' }}>{errors.name.message}</div>)}
             </div>
-            <div className="col">
-                <input type="number" step="0.01" min="0.1" className="form-control" value={cuttingDiameter} onChange={handleCuttingDiameter} name="cuttingDiameter" placeholder="Cutting Diameter" aria-label="Cutting Diameter" required />
+            <div className="col-6">
+                <input {...register("cuttingDiameter")} type="number" step="0.01" min="0.1" className="form-control" name="cuttingDiameter" placeholder="Cutting Diameter" aria-label="Cutting Diameter" />
+                {errors.cuttingDiameter && (<div style={{ color: 'red' }}>{errors.cuttingDiameter.message}</div>)}
             </div>
-            <div className="col">
-                <input type="number" step="1" min="1" className="form-control" value={connectionDiameter} onChange={handleConnectionDiameterChange} name="connectionDiameter" placeholder="Connection Diameter" aria-label="Connection Diameter" required />
+            <div className="col-6">
+                <input {...register("connectionDiameter")} type="number" step="1" min="1" className="form-control" name="connectionDiameter" placeholder="Connection Diameter" aria-label="Connection Diameter" />
+                {errors.connectionDiameter && (<div style={{ color: 'red' }}>{errors.connectionDiameter.message}</div>)}
             </div>
-            <div className="col">
-                <input type="number" step="1" min="1" className="form-control" value={cuttingLength} onChange={handleCuttingLengthChange} name="cuttingLength" placeholder="Cutting Length" aria-label="Cutiing Length" required />
+            <div className="col-6">
+                <input {...register("cuttingLength")} type="number" step="1" min="1" className="form-control" name="cuttingLength" placeholder="Cutting Length" aria-label="Cutiing Length" />
+                {errors.cuttingLength && (<div style={{ color: 'red' }}>{errors.cuttingLength.message}</div>)}
             </div>
-            <div className="col">
-                <input type="number" step="1" min="20" className="form-control" value={totalLength} onChange={handleTotalLengthChange} name="totalLength" placeholder="Total Length" aria-label="Total Length" required />
+            <div className="col-6">
+                <input {...register("totalLength")} type="number" step="1"  className="form-control" name="totalLength" placeholder="Total Length" aria-label="Total Length" />
+                {errors.totalLength && (<div style={{ color: 'red' }}>{errors.totalLength.message}</div>)}
             </div>
-            <div className="col">
-                <input type="number" step="1" min="1" className="form-control" value={flutes} onChange={handleFlutesChange} name="flutes" placeholder="Flutes" aria-label="Flutes" required />
+            <div className="col-6">
+                <input {...register("flutes")} type="number" step="1" min="1" className="form-control" name="flutes" placeholder="Flutes" aria-label="Flutes" />
+                {errors.flutes && (<div style={{ color: 'red' }}>{errors.flutes.message}</div>)}
             </div>
-            <div className="col">
-                <input type="number" step="0.01" min="0" className="form-control" value={chamfer} onChange={handleChamferChange} name="chamfer" placeholder="Chamfer" aria-label="Chamfer" required />
+            <div className="col-6">
+                <input {...register("chamfer")} type="number" step="0.01" min="0" className="form-control" name="chamfer" placeholder="Chamfer" aria-label="Chamfer" />
+                {errors.chamfer && (<div style={{ color: 'red' }}>{errors.chamfer.message}</div>)}
             </div>
             <div className="d-flex col-12 justify-content-center">
                 <button type="submit" onClick={handleSubmit} className="btn btn-success">Add tool</button>
