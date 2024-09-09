@@ -22,7 +22,7 @@ function Register() {
 
     const onSubmit = async (data) => {
         try {
-            const usersResponse = await fetch('http://localhost:3333/users');
+            const usersResponse = await fetch('http://157.230.115.216:3333/users');
             const users = await usersResponse.json();
             const emailExists = users.some(user => user.email === data.email);
 
@@ -49,7 +49,7 @@ function Register() {
 
         
             
-            const response = await fetch('http://localhost:3333/users', {
+            const response = await fetch('http://157.230.115.216:3333/users', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

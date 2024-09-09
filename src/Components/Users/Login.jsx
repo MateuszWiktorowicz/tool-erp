@@ -17,7 +17,7 @@ function Login( { setToken }) {
 
     const onSubmit = async (data) => {
         try {
-            const usersResponse = await fetch('http://localhost:3333/users');
+            const usersResponse = await fetch('http://157.230.115.216:3333/users');
             
             if (!usersResponse.ok) {
                 console.error('Failed to fetch users:', usersResponse.statusText);
@@ -43,7 +43,7 @@ function Login( { setToken }) {
                 return;
             }
 
-            const tokenResponse = await fetch('http://localhost:8080/login');
+            const tokenResponse = await fetch('http://157.230.115.216:8080/login');
 
             if (!tokenResponse.ok) {
                 throw new Error('Failed to fetch token');
