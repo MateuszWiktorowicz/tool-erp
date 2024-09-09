@@ -7,7 +7,7 @@ function ProductCreator() {
     const [ products, setProducts] = useState([]);
 
     useEffect(() => {
-        fetch('http://localhost:3333/tools')
+        fetch('http://157.230.115.216:3333/tools')
             .then(response => response.json())
             .then(data => setProducts(data))
             .catch(error => console.error('Error fetching products:', error));
@@ -18,7 +18,7 @@ function ProductCreator() {
     }
 
     const handleDeleteProduct = (id) => {
-        fetch(`http://localhost:3333/tools/${id}`, {
+        fetch(`http://157.230.115.216:3333/tools/${id}`, {
             method: 'DELETE',
         })
         .then(response => {

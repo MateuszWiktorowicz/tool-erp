@@ -40,7 +40,7 @@ function ProductForm({ onAddProduct, products }) {
             };
         
             try {
-                const response = await fetch('http://localhost:3333/tools', {
+                const response = await fetch('http://157.230.115.216:3333/tools', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
